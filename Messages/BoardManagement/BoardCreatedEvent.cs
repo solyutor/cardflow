@@ -1,4 +1,4 @@
-﻿namespace Messages.BoardManagement
+﻿namespace Solyutor.CardFlow.Messages.BoardManagement
 {
     public class BoardCreatedEvent
     {

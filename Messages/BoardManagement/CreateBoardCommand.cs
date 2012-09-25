@@ -1,4 +1,4 @@
-﻿namespace Messages.BoardManagement
+﻿namespace Solyutor.CardFlow.Messages.BoardManagement
 {
     //All command should ends with command postfix.
     public class State

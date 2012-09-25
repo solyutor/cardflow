@@ -1,5 +1,6 @@
-﻿using Messages.BoardManagement;
+﻿using System;
 using Rhino.ServiceBus;
+using Solyutor.CardFlow.Messages.BoardManagement;
 
 namespace Solyutor.CardFlow.Backend.BoardManagement
 {
@@ -7,7 +8,7 @@ namespace Solyutor.CardFlow.Backend.BoardManagement
     {
         public void Consume(CreateBoardCommand message)
         {
-            throw new System.NotImplementedException();
+            Console.WriteLine("ReceivedMessage!");
         }
     }
 }
