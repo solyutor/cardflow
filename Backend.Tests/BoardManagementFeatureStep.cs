@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Castle.Windsor;
+using NUnit.Framework;
 using Rhino.ServiceBus;
 using Rhino.ServiceBus.Impl;
 using Solyutor.CardFlow.Messages.BoardManagement;
@@ -13,7 +14,7 @@ using TechTalk.SpecFlow;
 namespace Solyutor.CardFlow.Backend.Tests
 {
     [Binding]
-    public class BoardManagementFeatureStep
+    public class BoardManagementFeatureStep : ConsumerOf<BoardCreatedEvent>
     {
         private WindsorContainer _windsor;
         private IStartableServiceBus _bus;
@@ -21,6 +22,7 @@ namespace Solyutor.CardFlow.Backend.Tests
         private DirectoryInfo _testDirectory;
         private DirectoryInfo _serviceDirectory;
         private Process _service;
+        private AutoResetEvent _responseReceived;
 
         public DirectoryInfo TestDirectory
         {
@@ -41,7 +43,7 @@ namespace Solyutor.CardFlow.Backend.Tests
             StartService();
             PrepareBus();
             PrepareScenario();
-
+            _responseReceived = new AutoResetEvent(false);
             //TODO: implement logic that has to run before executing each scenario
         }
 
@@ -67,11 +69,6 @@ namespace Solyutor.CardFlow.Backend.Tests
             _service = Process.Start(startInfo);
         }
 
-        private void PrepareScenario()
-        {
-            
-        }
-
         private void PrepareBus()
         {
             _windsor = new WindsorContainer();
@@ -82,10 +79,15 @@ namespace Solyutor.CardFlow.Backend.Tests
             _bus.Start();
         }
 
+        private void PrepareScenario()
+        {
+            _bus.Subscribe<BoardCreatedEvent>();
+            _bus.AddInstanceSubscription(this);
+        }
+
         [AfterScenario]
         public void AfterScenario()
         {
-            Thread.Sleep(10000);
             _service.Kill();
             _service.WaitForExit(5000);
             _windsor.Dispose();
@@ -120,7 +122,13 @@ namespace Solyutor.CardFlow.Backend.Tests
         [Then("the result should be (.*)")]
         public void ThenTheResultShouldBe(string result)
         {
-            //TODO: implement assert (verification) logic
+            var responseReceived = _responseReceived.WaitOne(TimeSpan.FromSeconds(5));
+            Assert.That(responseReceived, Is.True);
+        }
+
+        public void Consume(BoardCreatedEvent message)
+        {
+            _responseReceived.Set();
         }
     }
 }

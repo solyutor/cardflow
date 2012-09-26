@@ -6,9 +6,16 @@ namespace Solyutor.CardFlow.Backend.BoardManagement
 {
     public class CreateBoaradHandler : ConsumerOf<CreateBoardCommand>
     {
+        private readonly IServiceBus _bus;
+
+        public CreateBoaradHandler(IServiceBus bus)
+        {
+            _bus = bus;
+        }
+
         public void Consume(CreateBoardCommand message)
         {
-            Console.WriteLine("ReceivedMessage!");
+            _bus.Publish(new BoardCreatedEvent());
         }
     }
 }
