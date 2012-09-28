@@ -64,9 +64,14 @@ namespace Solyutor.CardFlow.Backend.Tests
 
         private void StartService()
         {
-            var startInfo = new ProcessStartInfo(Path.Combine(ServiceDirectory.FullName,"Solyutor.CardFlow.Backend.exe"))
-                {WorkingDirectory = ServiceDirectory.FullName};
-            _service = Process.Start(startInfo);
+            var pathToService = Path.Combine(ServiceDirectory.FullName, "Solyutor.CardFlow.Backend.exe");
+            var startInfo = new ProcessStartInfo
+                {
+                    FileName = pathToService,
+                    WorkingDirectory = ServiceDirectory.FullName
+                };
+            _service = new Process{StartInfo = startInfo};
+            ThreadPool.QueueUserWorkItem(state => _service.Start());
         }
 
         private void PrepareBus()
@@ -94,14 +99,14 @@ namespace Solyutor.CardFlow.Backend.Tests
             CleanUpQueues();
         }
 
-        [Given("I created new board named (.*)")]
-        public void CreateNewBoard(string boardName)
+        [Given]
+        public void I_created_new_board_named_BOARDNAME(string boardName)
         {
             _message = new CreateBoardCommand {Name = boardName};
         }
 
-        [Given("using following parameters:")]
-        public void SetBoardParameters(Table table)
+        [Given]
+        public void I_set_following_parameters(Table table)
         {
             _message.States =  table.Rows.Select(row => 
                 new State
@@ -113,14 +118,14 @@ namespace Solyutor.CardFlow.Backend.Tests
                 .ToArray();
         }
 
-        [When("I save changes")]
-        public void WhenIPressAdd()
+        [When]
+        public void I_save_changes()
         {
             _bus.Send(_message);
         }
 
-        [Then("the result should be (.*)")]
-        public void ThenTheResultShouldBe(string result)
+        [Then]
+        public void I_should_receive_board_created_event()
         {
             var responseReceived = _responseReceived.WaitOne(TimeSpan.FromSeconds(5));
             Assert.That(responseReceived, Is.True);
