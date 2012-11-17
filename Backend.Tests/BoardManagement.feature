@@ -5,8 +5,7 @@
 @Management
 Scenario: Create new board
 	
-	Given I created new board named CardFlow
-	And I set following parameters
+	Given I created new board named CardFlow, with parameters
 		| stepname      | order | capacity |
 		| Pending       | 1     | 3        |
 		| In Proggress  | 2     | 5        |

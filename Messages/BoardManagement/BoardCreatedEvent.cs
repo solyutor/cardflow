@@ -1,8 +1,10 @@
-﻿namespace Solyutor.CardFlow.Messages.BoardManagement
+﻿using System;
+
+namespace Solyutor.CardFlow.Messages.BoardManagement
 {
     public class BoardCreatedEvent
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

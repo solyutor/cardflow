@@ -86,36 +86,32 @@ namespace Solyutor.CardFlow.Backend.Tests
 
         private void PrepareScenario()
         {
-            _bus.Subscribe<BoardCreatedEvent>();
             _bus.AddInstanceSubscription(this);
         }
-
+        
         [AfterScenario]
         public void AfterScenario()
         {
             _service.Kill();
             _service.WaitForExit(5000);
             _windsor.Dispose();
-            CleanUpQueues();
         }
 
         [Given]
-        public void I_created_new_board_named_BOARDNAME(string boardName)
+        public void I_created_new_board_named_BOARDNAME_with_parameters(string boardName, Table table)
         {
-            _message = new CreateBoardCommand {Name = boardName};
-        }
-
-        [Given]
-        public void I_set_following_parameters(Table table)
-        {
-            _message.States =  table.Rows.Select(row => 
-                new State
-                {
-                    Name = row["stepname"], 
-                    Order = Convert.ToByte(row["order"]), 
-                    Capacity = Convert.ToByte(row["capacity"])
-                })
-                .ToArray();
+            _message = new CreateBoardCommand
+            {
+                Name = boardName,
+                States = table.Rows.Select(row =>
+                                           new State
+                                           {
+                                               Name = row["stepname"],
+                                               Order = Convert.ToByte(row["order"]),
+                                               Capacity = Convert.ToByte(row["capacity"])
+                                           })
+                    .ToArray()
+            };
         }
 
         [When]

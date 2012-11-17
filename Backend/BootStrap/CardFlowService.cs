@@ -1,12 +1,9 @@
 ﻿using Castle.Facilities.Logging;
-using Castle.MicroKernel.Registration;
+using Castle.Facilities.TypedFactory;
 using Castle.Windsor;
 using Rhino.ServiceBus;
-using Rhino.ServiceBus.Castle;
-using Rhino.ServiceBus.Impl;
-using Solyutor.CardFlow.Backend.BoardManagement;
-using Solyutor.CardFlow.Messages.BoardManagement;
 using Topshelf;
+using Topshelf.Logging;
 
 namespace Solyutor.CardFlow.Backend.BootStrap
 {
@@ -16,9 +13,8 @@ namespace Solyutor.CardFlow.Backend.BootStrap
 
         public bool Start(HostControl hostControl)
         {
+            
             ConfigureContainer();
-
-            ConfigureServiceBus();
 
             StartBus();
 
@@ -28,7 +24,7 @@ namespace Solyutor.CardFlow.Backend.BootStrap
         public bool Stop(HostControl hostControl)
         {
             _windsor.Dispose();
-            Topshelf.Logging.HostLogger.Shutdown();
+            HostLogger.Shutdown(); //shall I care about it?
             return true;
         }
 
@@ -43,19 +39,11 @@ namespace Solyutor.CardFlow.Backend.BootStrap
         {
             _windsor = new WindsorContainer();
             _windsor.AddFacility<LoggingFacility>(facility => facility.LogUsing(LoggerImplementation.NLog));
-
-            _windsor.Register(Component
-                                  .For<ConsumerOf<CreateBoardCommand>>()
-                                  .ImplementedBy<CreateBoaradHandler>()
-                                  .LifestyleTransient());
-
-        }
-
-        private void ConfigureServiceBus()
-        {
-            new RhinoServiceBusConfiguration()
-                .UseCastleWindsor(_windsor) 
-                .Configure();
+            _windsor.AddFacility<TypedFactoryFacility>();
+            _windsor.Install(
+                new ConsumersInstaller(),
+                new EventStoreInstaller(),
+                new ServiceBusInstaller());
         }
     }
 }

@@ -91,6 +91,7 @@
       <DependentUpon>BoardManagement.feature</DependentUpon>
     </Compile>
     <Compile Include="BoardManagementFeatureStep.cs" />
+    <Compile Include="FakeServiceBus.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Domain\" />

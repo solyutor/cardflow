@@ -1,5 +1,4 @@
-﻿using System;
-using Solyutor.CardFlow.Backend.BootStrap;
+﻿using Solyutor.CardFlow.Backend.BootStrap;
 using Topshelf;
 
 namespace Solyutor.CardFlow.Backend
@@ -13,7 +12,6 @@ namespace Solyutor.CardFlow.Backend
                     host.UseNLog();
                     host.Service<CardFlowService>();
                 }
-
                 );
 
             

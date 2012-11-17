@@ -73,8 +73,14 @@
     <Reference Include="EventStore.Logging.NLog">
       <HintPath>..\packages\EventStore.Logging.NLog.3.0.11326.44\lib\net40\EventStore.Logging.NLog.dll</HintPath>
     </Reference>
+    <Reference Include="EventStore.Serialization.Json">
+      <HintPath>..\packages\EventStore.Serialization.Json.3.0.11326.44\lib\net40\EventStore.Serialization.Json.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Magnum">
+      <HintPath>..\packages\Magnum.2.0.1.0\lib\NET40\Magnum.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
@@ -103,9 +109,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
-    <Compile Include="BoardManagement\CreateBoaradHandler.cs" />
+    <Compile Include="BootStrap\ConsumersInstaller.cs" />
+    <Compile Include="BootStrap\EventStoreInstaller.cs" />
+    <Compile Include="BootStrap\ServiceBusInstaller.cs" />
+    <Compile Include="Domain\Board.cs" />
+    <Compile Include="BoardManagement\CreateBoardHandler.cs" />
     <Compile Include="BootStrap\CardFlowService.cs" />
+    <Compile Include="IEvent.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
