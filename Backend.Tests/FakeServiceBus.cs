@@ -1,5 +1,6 @@
 ﻿using System;
-using Castle.MicroKernel;
+using System.Collections.Generic;
+using System.Linq;
 using Rhino.ServiceBus;
 using Rhino.ServiceBus.Impl;
 using Rhino.ServiceBus.Internal;
@@ -7,26 +8,45 @@ using Rhino.ServiceBus.Messages;
 
 namespace Solyutor.CardFlow.Backend.Tests
 {
-    
+    public class Holder
+    {
+        private readonly List<object> _all;
+
+        public Holder()
+        {
+            _all = new List<Object>();
+        }
+
+        public List<object> All
+        {
+            get { return _all; }
+        }
+
+        public TResult Last<TResult>()
+        {
+            return (TResult) _all.Last();
+        }
+    }
+
     public class FakeServiceBus : IServiceBus
     {
-        private readonly IKernel _kernel;
-        private readonly IOnewayBus _replyBus;
-
-        public FakeServiceBus(IKernel kernel, IOnewayBus replyBus)
+        public FakeServiceBus()
         {
-            _kernel = kernel;
-            _replyBus = replyBus;
+            Notified = new Holder();
+            Published = new Holder();
         }
+
+        public Holder Published { get; private set; }
+        public Holder Notified { get; private set; }
 
         public void Publish(params object[] messages)
         {
-            throw new NotImplementedException();
+            Published.All.AddRange(messages);
         }
 
         public void Notify(params object[] messages)
         {
-            throw new NotImplementedException();
+            Notified.All.AddRange(messages);
         }
 
         public void Reply(params object[] messages)
@@ -83,13 +103,10 @@ namespace Solyutor.CardFlow.Backend.Tests
         {
             throw new NotImplementedException();
         }
-        private ConsumerOf<TMessage>[] GetConsumers<TMessage>()
-        {
-            return _kernel.ResolveAll<ConsumerOf<TMessage>>();
-        }
 
-        public Endpoint Endpoint { get; private set; }
-        public CurrentMessageInformation CurrentMessageInformation { get; private set; }
+        public Endpoint Endpoint { get; set; }
+        public CurrentMessageInformation CurrentMessageInformation { get; set; }
+
         public event Action<Reroute> ReroutedEndpoint;
     }
 }

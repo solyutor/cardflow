@@ -18,14 +18,23 @@ namespace Solyutor.CardFlow.Backend.BoardManagement
 
         public void Consume(CreateBoardCommand message)
         {
-            var guid = Guid.NewGuid();
-            using(var stream = _storeEvents.CreateStream(guid))
+            var entityId = Guid.NewGuid();
+
+            var boardCreatedEvent = new BoardCreatedEvent
+                                        {
+                                            Id = entityId, 
+                                            Version = 1, 
+                                            Name = message.Name, 
+                                            States = message.States
+                                        };
+
+            using (var stream = _storeEvents.CreateStream(entityId))
             {
-                stream.Add(new EventMessage());
-                _bus.Publish(new BoardCreatedEvent());
+                stream.Add(new EventMessage{Body = boardCreatedEvent});
                 stream.CommitChanges(Guid.NewGuid());
             }
             
+            _bus.Notify(boardCreatedEvent);
         }
     }
 }

@@ -9,5 +9,7 @@ namespace Solyutor.CardFlow.Messages.BoardManagement
         public string Name { get; set; }
 
         public int Version { get; set; }
+
+        public State[] States { get; set; }
     }
 }
