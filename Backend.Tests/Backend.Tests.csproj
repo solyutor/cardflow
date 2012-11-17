@@ -38,8 +38,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="App_Readme\EventStore - Architectural Overview.docx" />
-    <None Include="App_Readme\EventStore - Transactional Integrity.docx" />
     <None Include="packages.config" />
     <None Include="BoardManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -119,10 +117,6 @@
       <Project>{B2E2DB08-7272-406F-BD7D-18A4D361A1E7}</Project>
       <Name>Messages</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_Readme\EventStore.license.txt" />
-    <Content Include="NSubstitute.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
