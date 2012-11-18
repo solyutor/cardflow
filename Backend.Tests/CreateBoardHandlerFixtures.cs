@@ -3,6 +3,7 @@ using EventStore;
 using FluentAssertions;
 using NUnit.Framework;
 using Solyutor.CardFlow.Backend.BoardManagement;
+using Solyutor.CardFlow.Backend.BootStrap;
 using Solyutor.CardFlow.Messages.BoardManagement;
 
 namespace Solyutor.CardFlow.Backend.Tests
@@ -13,10 +14,13 @@ namespace Solyutor.CardFlow.Backend.Tests
         [SetUp]
         public void Setup()
         {
+            _bus = new FakeServiceBus();
+
             _eventStore = Wireup.Init()
                                 .UsingInMemoryPersistence()
                                 .InitializeStorageEngine()
                                 .UsingSynchronousDispatchScheduler()
+                                .DispatchTo(new ServiceBusDispatcher(_bus))
                                 .Build();
         }
 
@@ -27,14 +31,15 @@ namespace Solyutor.CardFlow.Backend.Tests
         }
 
         private IStoreEvents _eventStore;
+        private FakeServiceBus _bus;
 
         [Test]
         //TODO This is an ugly way of testing. It obvious due to word 'and' in its method. Such style of testing should be avoided by splitting it into separate test, each on asserts a aspect of system. Tell about in a blog.
         public void Should_save_event_to_stream_and_notify_via_bus()
         {
-            var bus = new FakeServiceBus();
+            
 
-            var consumer = new CreateBoardHandler(bus, _eventStore);
+            var consumer = new CreateBoardHandler(_eventStore);
 
             var createBoardCommand = new CreateBoardCommand
                                          {
@@ -53,7 +58,7 @@ namespace Solyutor.CardFlow.Backend.Tests
 
             consumer.Consume(createBoardCommand);
 
-            var boardCreatedEvent = bus.Notified.Last<BoardCreatedEvent>();
+            var boardCreatedEvent = _bus.Notified.Last<BoardCreatedEvent>();
             boardCreatedEvent
                 .ShouldHave()
                 .SharedProperties()
