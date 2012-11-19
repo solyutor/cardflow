@@ -19,17 +19,18 @@ namespace Solyutor.CardFlow.Backend.Domain
 
         public virtual Guid Id { get; protected set; }
 
+
         public virtual void ApplyEvents(IEnumerable events)
         {
-            dynamic thisAsDynamic = this;
-            foreach (object @event in events)
-            {
-                thisAsDynamic.On(@event);
-            }
+            _events.Add(events);
         }
 
-        protected void AddEvent(object @event)
+        protected void Apply(object @event, bool isNew = true)
         {
+            if (isNew)
+            {
+                this.InvokeOn(@event);
+            }
             _events.Add(@event);
         }
     }

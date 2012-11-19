@@ -37,8 +37,6 @@ namespace Solyutor.CardFlow.Backend.Tests
         //TODO This is an ugly way of testing. It obvious due to word 'and' in its method. Such style of testing should be avoided by splitting it into separate test, each on asserts a aspect of system. Tell about in a blog.
         public void Should_save_event_to_stream_and_notify_via_bus()
         {
-            
-
             var consumer = new CreateBoardHandler(_eventStore);
 
             var createBoardCommand = new CreateBoardCommand

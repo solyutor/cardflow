@@ -26,16 +26,14 @@ namespace Solyutor.CardFlow.Backend.Domain
                                  States = states
                              };
 
-            On(@event);
+            Apply(@event);
         }
 
-        private void On(BoardCreatedEvent @event)
+        public void On(BoardCreatedEvent @event)
         {
             Id = @event.Id;
             _states.AddRange(@event.States);
             Name = @event.Name;
-
-            AddEvent(@event);
         }
     }
 }

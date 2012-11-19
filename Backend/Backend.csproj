@@ -77,9 +77,6 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Magnum">
-      <HintPath>..\packages\Magnum.2.0.1.0\lib\NET40\Magnum.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
@@ -116,6 +113,7 @@
     <Compile Include="Domain\Board.cs" />
     <Compile Include="BoardManagement\CreateBoardHandler.cs" />
     <Compile Include="BootStrap\CardFlowService.cs" />
+    <Compile Include="Domain\OnEventInvokeExtesions.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
