@@ -11,4 +11,4 @@ Scenario: Create new board
 		| In Proggress  | 2     | 5        |
 		| Ready To Ship | 3     | 6        |
 	When I save changes	
-	Then I should receive board created event
+	Then I should receive board created event with version 1

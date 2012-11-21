@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoardManagement\BoardCreatedEvent.cs" />
+    <Compile Include="BoardManagement\ChangeBoardHandler.cs" />
     <Compile Include="BoardManagement\CreateBoardCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

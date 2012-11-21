@@ -23,6 +23,7 @@ namespace Solyutor.CardFlow.Backend.Tests
         private DirectoryInfo _serviceDirectory;
         private Process _service;
         private AutoResetEvent _responseReceived;
+        private BoardCreatedEvent _respose;
 
         public DirectoryInfo TestDirectory
         {
@@ -121,15 +122,17 @@ namespace Solyutor.CardFlow.Backend.Tests
         }
 
         [Then]
-        public void I_should_receive_board_created_event()
+        public void I_should_receive_board_created_event_with_version_VERSION(int version)
         {
             var responseReceived = _responseReceived.WaitOne(TimeSpan.FromSeconds(5));
             Assert.That(responseReceived, Is.True);
+            Assert.That(_respose.Version, Is.EqualTo(version));
         }
 
         public void Consume(BoardCreatedEvent message)
         {
             _responseReceived.Set();
+            _respose = message;
         }
     }
 }

@@ -22,6 +22,7 @@ namespace Solyutor.CardFlow.Backend.Domain
             var @event = new BoardCreatedEvent
                              {
                                  Id = id,
+                                 Version = 1,
                                  Name = name,
                                  States = states
                              };
