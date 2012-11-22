@@ -114,6 +114,7 @@
     <Compile Include="BoardManagement\CreateBoardHandler.cs" />
     <Compile Include="BootStrap\CardFlowService.cs" />
     <Compile Include="Domain\OnEventInvokeExtesions.cs" />
+    <Compile Include="Domain\ReflectionExtensions.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

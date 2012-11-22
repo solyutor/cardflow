@@ -22,7 +22,7 @@ namespace Solyutor.CardFlow.Backend.Domain
             var @event = new BoardCreatedEvent
                              {
                                  Id = id,
-                                 Version = 1,
+                                 Version = Version+1,
                                  Name = name,
                                  States = states
                              };
@@ -30,7 +30,7 @@ namespace Solyutor.CardFlow.Backend.Domain
             AddEvent(@event);
         }
 
-        public void On(BoardCreatedEvent @event)
+        private void On(BoardCreatedEvent @event)
         {
             Id = @event.Id;
             _states.AddRange(@event.States);

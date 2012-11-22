@@ -23,7 +23,7 @@ namespace Solyutor.CardFlow.Backend.BoardManagement
 
             using (var stream = _storeEvents.CreateStream(entityId))
             {
-                foreach (var @event in board.Events)
+                foreach (var @event in board.UncommittedEvents)
                 {
                     stream.Add(new EventMessage {Body = @event});
                 }
