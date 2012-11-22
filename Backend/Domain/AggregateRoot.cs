@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using Solyutor.CardFlow.Messages.BoardManagement;
 
 namespace Solyutor.CardFlow.Backend.Domain
 {
@@ -7,9 +9,15 @@ namespace Solyutor.CardFlow.Backend.Domain
     {
         private readonly IList _uncommittedEvents;
 
-        public AggregateRoot()
+        public AggregateRoot() 
         {
             _uncommittedEvents = new ArrayList();
+            Id = Guid.NewGuid();
+        }
+
+        internal void SetId(Guid id)
+        {
+            Id = id;
         }
 
         public IEnumerable UncommittedEvents
@@ -17,23 +25,26 @@ namespace Solyutor.CardFlow.Backend.Domain
             get { return _uncommittedEvents; }
         }
 
-        public virtual Guid Id { get; protected set; }
+        public virtual Guid Id { get; private set; }
 
         public virtual int Version { get; private set; }
 
-        public virtual void ApplyEvents(IEnumerable events)
+        public virtual void ApplyEvents(IEnumerable<IEvent> events)
         {
-            foreach (object @event in events)
+            foreach (var @event in events)
             {
                 AddEvent(@event, false);
             }
         }
 
-        protected void AddEvent(object @event, bool isNew = true)
+        protected void AddEvent(IEvent @event, bool isNew = true)
         {
             this.InvokeOnEvent(@event);
-            
+
             Version++;
+
+            @event.Id = Id;
+            @event.Version = Version;
 
             if (isNew)
             {

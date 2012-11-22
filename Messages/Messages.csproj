@@ -44,6 +44,7 @@
     <Compile Include="BoardManagement\BoardCreatedEvent.cs" />
     <Compile Include="BoardManagement\ChangeBoardHandler.cs" />
     <Compile Include="BoardManagement\CreateBoardCommand.cs" />
+    <Compile Include="BoardManagement\IEvent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -17,11 +17,9 @@ namespace Solyutor.CardFlow.Backend.BoardManagement
 
         public void Consume(CreateBoardCommand message)
         {
-            var entityId = Guid.NewGuid();
+            var board = new Board(message.Name, message.States);
 
-            var board = new Board(entityId, message.Name, message.States);
-
-            using (var stream = _storeEvents.CreateStream(entityId))
+            using (var stream = _storeEvents.CreateStream(board.Id))
             {
                 foreach (var @event in board.UncommittedEvents)
                 {

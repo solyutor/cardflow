@@ -2,7 +2,7 @@
 
 namespace Solyutor.CardFlow.Messages.BoardManagement
 {
-    public class BoardCreatedEvent
+    public class BoardCreatedEvent : IEvent
     {
         public Guid Id { get; set; }
 
